@@ -1,0 +1,21 @@
+Data-Products---Week-1-Project
+==============================
+
+library('shiny')
+
+shinyServer(
+  function(input,output){
+    #Read in the data
+    air <- data.frame(airquality)
+    #Map month and day values to the output
+    output$value3 <- renderPrint({ input$month})
+    output$value4 <- renderPrint({ input$day})
+    
+    #Subset the dataset on the user's chosen month and day values
+    air1 <- reactive({subset(air, Month==input$month & Day==input$day,c("Ozone"))})
+    #Isolate the Ozone value
+    ozone <- reactive({as.numeric((air1()$Ozone))})
+    #Map the Ozone value to the output
+    output$value5 <- renderText(ozone())
+  })
+
